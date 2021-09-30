@@ -1,6 +1,10 @@
+using Gamification.Data;
+using Gamification.Helpers;
+using Gamification.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,6 +23,12 @@ namespace Gamification
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<UserContext>(options => options.UseSqlServer(connection));
+
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<JwtService>();
 
             services.AddControllersWithViews();
 
@@ -45,6 +55,12 @@ namespace Gamification
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseCors(options => options
+            .WithOrigins( new[] {"http://localhost:3000"})
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials());
 
             app.UseEndpoints(endpoints =>
             {
