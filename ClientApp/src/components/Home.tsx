@@ -1,12 +1,9 @@
-import React, { Component } from 'react';
-import { useState, useEffect } from 'react';
+import React from 'react';
 
-
-const Home = ({name}) => {
+const Home = () => {
     return (
       <div>
         <h1>Hello, world!</h1>
-        <div>{name ? 'Hi ' + name : 'Who are you?)'}</div>
         <p>Welcome to your new single-page application, built with:</p>
         <ul>
           <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>

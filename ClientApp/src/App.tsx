@@ -1,9 +1,9 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router';
-import { Layout } from './components/Layout';
+import Layout from './components/Layout';
 import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import FetchData from './components/FetchData';
+import Counter from './components/Counter';
 import NavMenu from './components/NavMenu';
 
 import './custom.css'
@@ -36,33 +36,14 @@ const App = () => {
   return (
     <Layout >
       <NavMenu name={name} setName={setName} />
-      <Route exact path='/' component={()=><Home name={name}/>} />
+      <Route exact path='/' component={() => <Home/>} />
       <Route path='/counter' component={Counter} />
       <Route path='/fetch-data' component={FetchData} />
       <Route path='/game' component={Game} />
-      <Route path='/login' component={()=><Login setName={setName}/>} />
+      <Route path='/login' component={() => <Login setName={setName} />} />
       <Route path='/register' component={Register} />
     </Layout>
   );
 }
 
 export default App;
-//
-/*
-export default class App extends Component {
-  static displayName = App.name;
-
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-        <Route path='/game' component={Game} />
-        <Route path='/login' component={Login} />
-        <Route path='/register' component={Register} />
-      </Layout>
-    );
-  }
-}
-*/
