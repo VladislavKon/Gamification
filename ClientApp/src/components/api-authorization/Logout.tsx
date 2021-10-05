@@ -1,18 +1,16 @@
-import React from 'react'
-import { Component } from 'react';
-import authService from './AuthorizeService';
-import { AuthenticationResultStatus } from './AuthorizeService';
+import React, { Component } from 'react'
+import authService, { AuthenticationResultStatus } from './AuthorizeService';
 import { QueryParameterNames, LogoutActions, ApplicationPaths } from './ApiAuthorizationConstants';
 
 // The main responsibility of this component is to handle the user's logout process.
 // This is the starting point for the logout process, which is usually initiated when a
 // user clicks on the logout button on the LoginMenu component.
-export class Logout extends Component {
-    constructor(props) {
+export class Logout extends Component<{action: string},{message: string, isReady: boolean, authenticated: boolean}> {
+    constructor(props: any) {
         super(props);
 
         this.state = {
-            message: undefined,
+            message: '',
             isReady: false,
             authenticated: false
         };
@@ -23,7 +21,7 @@ export class Logout extends Component {
         switch (action) {
             case LogoutActions.Logout:
                 if (!!window.history.state.state.local) {
-                    this.logout(this.getReturnUrl());
+                    this.logout(this.getReturnUrl(null));
                 } else {
                     // This prevents regular links to <app>/authentication/logout from triggering a logout
                     this.setState({ isReady: true, message: "The logout was not initiated from within the page." });
@@ -64,7 +62,7 @@ export class Logout extends Component {
         }
     }
 
-    async logout(returnUrl) {
+    async logout(returnUrl: string) {
         const state = { returnUrl };
         const isauthenticated = await authService.isAuthenticated();
         if (isauthenticated) {
@@ -73,7 +71,7 @@ export class Logout extends Component {
                 case AuthenticationResultStatus.Redirect:
                     break;
                 case AuthenticationResultStatus.Success:
-                    await this.navigateToReturnUrl(returnUrl);
+                    this.navigateToReturnUrl(returnUrl);
                     break;
                 case AuthenticationResultStatus.Fail:
                     this.setState({ message: result.message });
@@ -95,7 +93,7 @@ export class Logout extends Component {
                 // is when we are doing a redirect sign in flow.
                 throw new Error('Should not redirect.');
             case AuthenticationResultStatus.Success:
-                await this.navigateToReturnUrl(this.getReturnUrl(result.state));
+                this.navigateToReturnUrl(this.getReturnUrl(result.state));
                 break;
             case AuthenticationResultStatus.Fail:
                 this.setState({ message: result.message });
@@ -110,7 +108,7 @@ export class Logout extends Component {
         this.setState({ isReady: true, authenticated });
     }
 
-    getReturnUrl(state) {
+    getReturnUrl(state: any) : string {
         const params = new URLSearchParams(window.location.search);
         const fromQuery = params.get(QueryParameterNames.ReturnUrl);
         if (fromQuery && !fromQuery.startsWith(`${window.location.origin}/`)) {
@@ -122,7 +120,7 @@ export class Logout extends Component {
             `${window.location.origin}${ApplicationPaths.LoggedOut}`;
     }
 
-    navigateToReturnUrl(returnUrl) {
+    navigateToReturnUrl(returnUrl: string): void {
         return window.location.replace(returnUrl);
     }
 }

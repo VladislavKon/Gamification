@@ -1,11 +1,12 @@
-import React from 'react'
-import { Component } from 'react'
+import React, { Component } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { ApplicationPaths, QueryParameterNames } from './ApiAuthorizationConstants'
 import authService from './AuthorizeService'
 
-export default class AuthorizeRoute extends Component {
-    constructor(props) {
+export default class AuthorizeRoute extends Component<any, {ready:boolean, authenticated: boolean}> {
+    private _subscription: any
+
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -22,6 +23,7 @@ export default class AuthorizeRoute extends Component {
     componentWillUnmount() {
         authService.unsubscribe(this._subscription);
     }
+    
 
     render() {
         const { ready, authenticated } = this.state;

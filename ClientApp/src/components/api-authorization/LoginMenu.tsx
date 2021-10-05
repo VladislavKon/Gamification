@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 import authService from './AuthorizeService';
 import { ApplicationPaths } from './ApiAuthorizationConstants';
 
-export class LoginMenu extends Component {
-    constructor(props) {
+export class LoginMenu extends Component<{},{isAuthenticated: boolean, userName: string}> {
+    _subscription: number | undefined;
+    constructor(props: any) {
         super(props);
 
         this.state = {
             isAuthenticated: false,
-            userName: null
+            userName: ''
         };
     }
 
@@ -44,7 +45,7 @@ export class LoginMenu extends Component {
         }
     }
 
-    authenticatedView(userName, profilePath, logoutPath) {
+    authenticatedView(userName: string, profilePath: string, logoutPath: any) {
         return (<Fragment>
             <NavItem>
                 <NavLink tag={Link} className="text-dark" to={profilePath}>Hello {userName}</NavLink>
@@ -56,7 +57,7 @@ export class LoginMenu extends Component {
 
     }
 
-    anonymousView(registerPath, loginPath) {
+    anonymousView(registerPath: string, loginPath: string) {
         return (<Fragment>
             <NavItem>
                 <NavLink tag={Link} className="text-dark" to={registerPath}>Register</NavLink>
