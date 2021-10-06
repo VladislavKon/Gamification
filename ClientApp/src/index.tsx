@@ -1,17 +1,25 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-//import registerServiceWorker from './registerServiceWorker';
+import { store } from './app/store'
+import { OidcProvider } from 'redux-oidc';
+import userManager from './components/auth/userManager';
+// import registerServiceWorker from './registerServiceWorker';
 
-const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
+const baseUrl: string = document.getElementsByTagName('base')[0].getAttribute('href') || '';
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
-  <BrowserRouter basename={baseUrl}>
-    <App />
-  </BrowserRouter>,
+  <Provider store={store}>
+    <OidcProvider store={store} userManager={userManager}>
+    <BrowserRouter basename={baseUrl}>
+      <App />
+    </BrowserRouter>
+    </OidcProvider>
+  </Provider>,
   rootElement);
 
 // Uncomment the line above that imports the registerServiceWorker function

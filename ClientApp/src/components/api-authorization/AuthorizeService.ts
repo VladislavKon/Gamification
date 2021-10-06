@@ -16,7 +16,7 @@ export class AuthorizeService {
     // By default pop ups are disabled because they don't work properly on Edge.
     // If you want to enable pop up authentication simply set this flag to false.
     _popUpDisabled = true;
-    userManager: any;
+    userManager?: UserManager;
 
     async isAuthenticated() {
         const user = await this.getUser();
@@ -29,13 +29,13 @@ export class AuthorizeService {
         }
 
         await this.ensureUserManagerInitialized();
-        const user = await this.userManager.getUser();
+        const user = await this.userManager?.getUser();
         return user && user.profile;
     }
 
     async getAccessToken() {
         await this.ensureUserManagerInitialized();
-        const user = await this.userManager.getUser();
+        const user = await this.userManager?.getUser();
         return user && user.access_token;
     }
 
@@ -52,7 +52,7 @@ export class AuthorizeService {
     async signIn(state: any): Promise<AuthResponse> {
         await this.ensureUserManagerInitialized();
         try {
-            const silentUser = await this.userManager.signinSilent(this.createArguments(null));
+            const silentUser = await this.userManager?.signinSilent(this.createArguments(null));
             this.updateState(silentUser);
             return this.success(state);
         } catch (silentError) {
@@ -64,7 +64,7 @@ export class AuthorizeService {
                     throw new Error('Popup disabled. Change \'AuthorizeService.js:AuthorizeService._popupDisabled\' to false to enable it.')
                 }
 
-                const popUpUser = await this.userManager.signinPopup(this.createArguments(null));
+                const popUpUser = await this.userManager?.signinPopup(this.createArguments(null));
                 this.updateState(popUpUser);
                 return this.success(state);
             } catch (popUpError: any) {
@@ -77,7 +77,7 @@ export class AuthorizeService {
 
                 // PopUps might be blocked by the user, fallback to redirect
                 try {
-                    await this.userManager.signinRedirect(this.createArguments(state));
+                    await this.userManager?.signinRedirect(this.createArguments(state));
                     return this.redirect();
                 } catch (redirectError) {
                     console.log("Redirect authentication error: ", redirectError);
@@ -90,7 +90,7 @@ export class AuthorizeService {
     async completeSignIn(url: string): Promise<AuthResponse> {
         try {
             await this.ensureUserManagerInitialized();
-            const user = await this.userManager.signinCallback(url);
+            const user = await this.userManager?.signinCallback(url);
             this.updateState(user);
             return this.success(user && user.state);
         } catch (error) {
@@ -111,13 +111,13 @@ export class AuthorizeService {
                 throw new Error('Popup disabled. Change \'AuthorizeService.js:AuthorizeService._popupDisabled\' to false to enable it.')
             }
 
-            await this.userManager.signoutPopup(this.createArguments(null));
+            await this.userManager?.signoutPopup(this.createArguments(null));
             this.updateState(undefined);
             return this.success(state);
         } catch (popupSignOutError) {
             console.log("Popup signout error: ", popupSignOutError);
             try {
-                await this.userManager.signoutRedirect(this.createArguments(state));
+                await this.userManager?.signoutRedirect(this.createArguments(state));
                 return this.redirect();
             } catch (redirectSignOutError) {
                 console.log("Redirect signout error: ", redirectSignOutError);
@@ -129,9 +129,9 @@ export class AuthorizeService {
     async completeSignOut(url: any): Promise<AuthResponse> {
         await this.ensureUserManagerInitialized();
         try {
-            const response = await this.userManager.signoutCallback(url);
+            const response = await this.userManager?.signoutCallback(url);
             this.updateState(null);
-            return this.success(response && response.data);
+            return this.success(response);
         } catch (error) {
             console.log(`There was an error trying to log out '${error}'.`);
             return this.error(error);
@@ -203,7 +203,7 @@ export class AuthorizeService {
         this.userManager = new UserManager(settings);
 
         this.userManager.events.addUserSignedOut(async () => {
-            await this.userManager.removeUser();
+            await this.userManager?.removeUser();
             this.updateState(undefined);
         });
     }
