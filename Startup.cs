@@ -1,13 +1,15 @@
 using Gamification.Data;
-using Gamification.Helpers;
 using Gamification.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 
 namespace Gamification
 {
@@ -28,17 +30,28 @@ namespace Gamification
             services.AddDbContext<UserContext>(options => options.UseSqlServer(connection));
 
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<JwtService>();
 
-            services.AddControllersWithViews();
+            services.AddControllers();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => //CookieAuthenticationOptions
+                {
+                    options.Cookie.SameSite = SameSiteMode.None;
+                    options.Events = new CookieAuthenticationEvents
+                    {
+                        OnRedirectToLogin = redirectContext =>
+                        {
+                            redirectContext.HttpContext.Response.StatusCode = 401;
+                            return Task.CompletedTask;
+                        }
+                    };
 
+                });
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
             });
         }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -62,9 +75,12 @@ namespace Gamification
             .AllowAnyMethod()
             .AllowCredentials());
 
+            app.UseAuthentication();    
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
+                endpoints.MapControllerRoute( // еще надо уточнить какая будет маршрутизация 
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });

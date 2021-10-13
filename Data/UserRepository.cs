@@ -8,25 +8,21 @@ namespace Gamification.Data
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UserContext _context;
+        private readonly UserContext db;
         public UserRepository(UserContext context)
         {
-            _context = context;
+           db = context;
         }
-        public User Create(User user)
+        public User Create (User user)
         {
-            _context.Users.Add(user);
-            user.Id = _context.SaveChanges();
+            db.Users.Add(user);
+            db.SaveChanges();
             return user;
         }
 
-        public User GetByEmail(string email)
+        public User GetUserByUserName(string userName)
         {
-            return _context.Users.FirstOrDefault(u => u.Email == email);
-        }
-        public User GetById(int id )
-        {
-            return _context.Users.FirstOrDefault(u => u.Id == id);
+            return db.Users.FirstOrDefault(u=> u.UserName == userName);
         }
     }
 }
