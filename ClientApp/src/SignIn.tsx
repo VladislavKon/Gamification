@@ -1,5 +1,3 @@
-
-   
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -31,7 +29,7 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
@@ -39,6 +37,16 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    const body = {
+      UserName: data.get('email'),
+      Password: data.get('password'),
+    };
+    
+    await fetch('api/login',{
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {'Content-Type':'application/json'}
+    })
   };
 
   return (
