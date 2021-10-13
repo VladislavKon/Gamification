@@ -43,7 +43,7 @@ export class Game extends Component<{}, GameState>{
         });
     }
 
-    clickClickFunc(){
+    clickClickFunc() {
         // Дергаю публичную функцию TaskOnClick из скрипта на объекте GameHandler
         const objStr =  JSON.stringify(this.state.coordinates);
         console.log(objStr)

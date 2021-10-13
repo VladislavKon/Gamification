@@ -15,24 +15,6 @@ import Register from './components/Register';
 const App = () => {
   const [name, setName] = useState('');
 
-  useEffect(() => {
-    (
-      async () => {
-        const response = await fetch('http://localhost:4226/api/user', {
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-        });
-
-        const content = await response.json();
-
-        setName(content.name);
-        console.log(name);
-      }
-
-    )();
-
-  });
-
   return (
     <Layout >
       <NavMenu name={name} setName={setName} />
