@@ -2,7 +2,6 @@
     "name": "my-app",
     "version": "0.0.1",
     "scripts": {
-        "start1": "webpack serve --config webpack.dev.config.ts",
         "start": " react-scripts start"
     },
     "dependencies": {
@@ -10,10 +9,13 @@
         "@emotion/styled": "^11.3.0",
         "@mui/icons-material": "^5.0.3",
         "@mui/material": "^5.0.3",
+        "@reduxjs/toolkit": "^1.6.2",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
+        "react-redux": "^7.2.5",
         "react-router-dom": "^5.3.0",
-        "react-scripts": "^4.0.3"
+        "react-scripts": "^4.0.3",
+        "redux": "^4.1.1"
     },
     "devDependencies": {
         "@types/react": "^17.0.28",
@@ -21,6 +23,7 @@
         "@types/react-router-dom": "^5.3.1",
         "@typescript-eslint/eslint-plugin": "^5.0.0",
         "@typescript-eslint/parser": "^5.0.0",
+        "@types/react-redux": "^7.1.19",
         "eslint": "^7.32.0",
         "eslint-plugin-react": "^7.26.1",
         "eslint-plugin-react-hooks": "^4.2.0",
@@ -29,14 +32,14 @@
     },
     "browserslist": {
         "production": [
-          ">0.2%",
-          "not dead",
-          "not op_mini all"
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
         ],
         "development": [
-          "last 1 chrome version",
-          "last 1 firefox version",
-          "last 1 safari version"
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
         ]
-      }
+    }
 }

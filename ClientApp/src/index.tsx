@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { SyntheticEvent } from "react";
 import Register from "./Register";
-import SignIn from "./SignIn";
+import SignIn from "./auth/SignIn";
 import register from "./registerServiceWorker";
 
 const App = () => {

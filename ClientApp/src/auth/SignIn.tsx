@@ -12,23 +12,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { useAppDispatch } from '../app/hooks';
+import { signInComplete } from './authSlice';
 
 const theme = createTheme();
 
 export default function SignIn() {
+  const dispatch = useAppDispatch();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -42,11 +33,16 @@ export default function SignIn() {
       Password: data.get('password'),
     };
     
-    await fetch('api/login',{
+    const response = await fetch('api/login',{
       method: 'POST',
       body: JSON.stringify(body),
       headers: {'Content-Type':'application/json'}
-    })
+    });
+
+    if(response.ok){
+      dispatch(signInComplete())
+    }
+    
   };
 
   return (
@@ -114,7 +110,6 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
