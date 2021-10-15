@@ -14,7 +14,7 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         signInComplete: (state: AuthState) => {
-            console.log(state);
+            console.log(state.isAuthenticated);
             state.isAuthenticated = true
         },
     }
