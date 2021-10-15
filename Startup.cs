@@ -31,11 +31,12 @@ namespace Gamification
 
             services.AddScoped<IUserRepository, UserRepository>();
 
-            services.AddControllers();
+            
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions
                 {
                     options.Cookie.SameSite = SameSiteMode.None;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Events = new CookieAuthenticationEvents
                     {
                         OnRedirectToLogin = redirectContext =>
@@ -46,6 +47,7 @@ namespace Gamification
                     };
 
                 });
+            services.AddControllers();
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -64,6 +66,7 @@ namespace Gamification
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
