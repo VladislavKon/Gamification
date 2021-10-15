@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,12 +14,19 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useAppDispatch } from '../app/hooks';
 import { signInComplete } from './authSlice';
+import { Redirect } from 'react-router-dom';
 
 const theme = createTheme();
 
 export default function SignIn() {
   const dispatch = useAppDispatch();
 
+  const [redirectToReferrer, setRedirectToReferrer] = React.useState(false)
+
+  if (redirectToReferrer === true) {
+    return <Redirect to='/game' />
+  }
+  
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -32,17 +39,17 @@ export default function SignIn() {
       UserName: data.get('email'),
       Password: data.get('password'),
     };
-    
-    const response = await fetch('api/login',{
+
+    const response = await fetch('api/login', {
       method: 'POST',
       body: JSON.stringify(body),
-      headers: {'Content-Type':'application/json'}
+      headers: { 'Content-Type': 'application/json' }
     });
-
-    if(response.ok){
-      dispatch(signInComplete())
-    }
-    
+    // меняю глобальный стейт 
+    // TODO: нужно добавить if 
+    dispatch(signInComplete());
+    // меняю стейт чтоб обновить форму
+    setRedirectToReferrer(true);
   };
 
   return (
