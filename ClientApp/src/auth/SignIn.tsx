@@ -14,7 +14,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useAppDispatch } from '../app/hooks';
 import { signInComplete } from './authSlice';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link as LinkRoute } from 'react-router-dom';
+
 
 const theme = createTheme();
 
@@ -110,8 +111,8 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link component={LinkRoute} to='/signup' variant="body2" >
+                  {"Регистрация"}
                 </Link>
               </Grid>
             </Grid>
