@@ -43,12 +43,12 @@ namespace Gamification.Controllers
             // если нет такого пользователя в базе
             if (user == null)
             {
-                return BadRequest(new { message = "Invalid Credentials" });
+                return Unauthorized(new { message = "Invalid Credentials" });
             }
             // если пароль не прошел верификацию 
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
             {
-                return BadRequest(new { message = "Invalid Credentials" });
+                return Unauthorized(new { message = "Invalid Credentials" });
             }
 
             await AuthenticateAsync(dto.UserName);
@@ -62,10 +62,13 @@ namespace Gamification.Controllers
         }
 
         // возможно нужно будет подшаманить
+        [AllowAnonymous]
         [HttpGet(template: "user")]
         public IActionResult GetUser()
         {
-            return Content(User.Identity.Name);
+            if(string.IsNullOrEmpty(User.Identity.Name))
+                return BadRequest();
+            return Ok(new {userName = User.Identity.Name });
 
         }
 

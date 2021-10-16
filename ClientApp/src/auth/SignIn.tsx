@@ -31,7 +31,7 @@ export default function SignIn() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
+    
     console.log({
       email: data.get('email'),
       password: data.get('password'),
@@ -46,11 +46,13 @@ export default function SignIn() {
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' }
     });
-    // меняю глобальный стейт 
-    // TODO: нужно добавить if 
-    dispatch(signInComplete());
-    // меняю стейт чтоб обновить форму
-    setRedirectToReferrer(true);
+    
+    if(response.ok){
+      // меняю глобальный стейт 
+      dispatch(signInComplete());
+      // меняю стейт чтоб обновить форму
+      setRedirectToReferrer(true);
+    }
   };
 
   return (

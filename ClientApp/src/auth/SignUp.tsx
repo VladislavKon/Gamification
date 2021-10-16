@@ -30,7 +30,13 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [redirectToReferrer, setRedirectToReferrer] = React.useState(false)
+
+  if (redirectToReferrer === true) {
+    return <Redirect to='/signin' />
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
@@ -38,6 +44,23 @@ export default function SignUp() {
       email: data.get('email'),
       password: data.get('password'),
     });
+
+    const body = {
+      UserName: data.get('email'),
+      Password: data.get('password'),
+    };
+
+    const response = await fetch('api/register', {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if(response.status === 201){
+      setRedirectToReferrer(true);
+    }
+    console.log(response);
+
   };
 
   return (
