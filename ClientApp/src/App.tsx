@@ -10,6 +10,7 @@ import { Temp } from "./components/temp";
 import { Temp2 } from "./components/temp2";
 import { useAppDispatch, useAppSelctor } from "./app/hooks";
 import { userOkFetch } from "./auth/authSlice";
+import Quiz from "./quiz/Quiz";
 
 const App = () => {
     const history = createBrowserHistory();
@@ -23,6 +24,7 @@ const App = () => {
         <Router history={history}>
             <Route path='/signin' component={SignIn} />
             <Route path='/signup' component={SignUp} />
+            <PrivateRoute path='/quiz' component={Quiz} />
             <PrivateRoute path='/game' component={Temp} />
             <PrivateRoute path='/game2' component={Temp2} />
         </Router>

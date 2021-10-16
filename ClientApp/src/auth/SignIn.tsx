@@ -25,7 +25,7 @@ export default function SignIn() {
   const [redirectToReferrer, setRedirectToReferrer] = React.useState(false)
 
   if (redirectToReferrer === true) {
-    return <Redirect to='/game' />
+    return <Redirect to='/quiz' />
   }
   
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -52,6 +52,8 @@ export default function SignIn() {
       dispatch(signInComplete());
       // меняю стейт чтоб обновить форму
       setRedirectToReferrer(true);
+    } else {
+      alert('Ошибка!!!');
     }
   };
 
