@@ -1,7 +1,10 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
+import { Link } from 'react-router-dom';
+import { useAppSelector } from '../app/hooks';
 
 export default function Quiz() {
+    const userName = useAppSelector(s => s.auth.name)
     return (
         <Box
             sx={{
@@ -22,13 +25,18 @@ export default function Quiz() {
                     gridAutoRows: '40px',
                     gap: 5,
                     gridTemplateRows: 'auto',
-                    gridTemplateAreas: `"header header header header"
-            "sidebar main main main"
-            "footer footer footer footer"`,
-            
+                    gridTemplateAreas: `
+                    "header header header header"
+                    "sidebar main main main"
+                    "footer footer footer footer"`,
+
                 }}
             >
-                <Box sx={{ gridArea: 'header', bgcolor: 'primary.main', gridRow: 'span 2' }}>Header + инфа с таймерами</Box>
+                <Box sx={{ gridArea: 'header', bgcolor: 'primary.main', gridRow: 'span 2' }}>
+                    Header + инфа с таймерами
+                    <Link to='/game'>game</Link>
+                    <Link to='/game2'>game2</Link>
+                </Box>
                 <Box sx={{ gridArea: 'main', bgcolor: 'secondary.main', textAlign: 'center', gridRow: '3/12' }}>
                     тут происходит основной кипиш с вопросами,
                     Предлагаю вынести в отдельный компонент
@@ -38,7 +46,7 @@ export default function Quiz() {
                         <li>тут разметить пользователя 😎</li>
                         <li>тут разметить пользователя 😴</li>
                         <li>тут разметить пользователя 🐵</li>
-                        <li>тут разметить пользователя 💩</li>
+                        <li>тут разметить пользователя 💩 {userName}</li>
                         <li>тут разметить пользователя 🐱‍👤</li>
                     </ul>
                 </Box>

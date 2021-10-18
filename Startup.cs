@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
+using Gamification.Controllers;
+using Gamification.Hubs;
 
 namespace Gamification
 {
@@ -31,7 +33,7 @@ namespace Gamification
 
             services.AddScoped<IUserRepository, UserRepository>();
 
-            
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions
                 {
@@ -53,6 +55,8 @@ namespace Gamification
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSignalR();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -73,16 +77,17 @@ namespace Gamification
             app.UseRouting();
 
             app.UseCors(options => options
-            .WithOrigins( new[] {"http://localhost:3000"})
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials());
+                .WithOrigins(new[] { "http://localhost:3000" })
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials());
 
-            app.UseAuthentication();    
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<ChatHub>("/hub");
                 endpoints.MapControllerRoute( // еще надо уточнить какая будет маршрутизация 
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");

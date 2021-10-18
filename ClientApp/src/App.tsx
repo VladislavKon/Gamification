@@ -8,9 +8,10 @@ import { Route, Router } from "react-router";
 import PrivateRoute from "./components/PrivateRoute";
 import { Temp } from "./components/temp";
 import { Temp2 } from "./components/temp2";
-import { useAppDispatch, useAppSelctor } from "./app/hooks";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { userOkFetch } from "./auth/authSlice";
 import Quiz from "./quiz/Quiz";
+import Lobby from "./lobby/Lobby";
 
 const App = () => {
     const history = createBrowserHistory();
@@ -20,15 +21,14 @@ const App = () => {
         dispatch(userOkFetch());
     // }
     return (
-
         <Router history={history}>
             <Route path='/signin' component={SignIn} />
             <Route path='/signup' component={SignUp} />
+            <Route path='/lobby' component={Lobby} />
             <PrivateRoute path='/quiz' component={Quiz} />
             <PrivateRoute path='/game' component={Temp} />
             <PrivateRoute path='/game2' component={Temp2} />
         </Router>
-
     );
 }
 

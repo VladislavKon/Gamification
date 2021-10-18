@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useAppDispatch } from '../app/hooks';
 import { signInComplete } from './authSlice';
 import { Redirect, Link as LinkRoute } from 'react-router-dom';
+import { LoginResponse } from './loginResponse';
 
 
 const theme = createTheme();
@@ -25,7 +26,7 @@ export default function SignIn() {
   const [redirectToReferrer, setRedirectToReferrer] = React.useState(false)
 
   if (redirectToReferrer === true) {
-    return <Redirect to='/quiz' />
+    return <Redirect to='/game' />
   }
   
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -49,7 +50,8 @@ export default function SignIn() {
     
     if(response.ok){
       // меняю глобальный стейт 
-      dispatch(signInComplete());
+      const body: LoginResponse = await response.json();
+      dispatch(signInComplete(body.username ?? ''));
       // меняю стейт чтоб обновить форму
       setRedirectToReferrer(true);
     } else {
