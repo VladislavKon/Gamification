@@ -52,7 +52,8 @@ namespace Gamification.Controllers
             }
 
             await AuthenticateAsync(dto.UserName);
-            return Ok(new { message = "success" });
+
+            return Ok(new { message = "success", username = dto.UserName });
         }
         
         [HttpPost(template: "logout")]
@@ -67,8 +68,9 @@ namespace Gamification.Controllers
         public IActionResult GetUser()
         {
             if(string.IsNullOrEmpty(User.Identity.Name))
-                return BadRequest();
-            return Ok(new {userName = User.Identity.Name });
+                return Unauthorized(new { message = "Invalid Credentials" });
+
+            return Ok(new {username = User.Identity.Name });
 
         }
 

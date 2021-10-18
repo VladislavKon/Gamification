@@ -1,5 +1,6 @@
+import { LoginResponse } from './loginResponse';
 import { RootState } from './../app/store';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { useAppDispatch } from '../app/hooks';
 
 export interface AuthState {
@@ -29,16 +30,17 @@ export const userOkFetch = createAsyncThunk('get/api/user', async (): Promise<Ge
     try {
 
         const response = await fetch('api/user');
-        let body = null;
+        let body: LoginResponse = {};
         console.log(response);
         if (response.ok && response.body) {
             body = await response.json();
         }
-        return { isOk: response.ok, userName: body.userName, error: !response.ok }
+        return { isOk: response.ok, userName: body.username, error: !response.ok }
     } catch (ex) {
-        
         console.error(ex);
         return { isOk: false, error: true }
+    } finally {
+        dispatch(endLoadData());
     }
 });
 
@@ -46,9 +48,10 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        signInComplete: (state: AuthState) => {
+        signInComplete: (state: AuthState, action: PayloadAction<string>) => {
             console.log(state.isAuthenticated);
-            state.isAuthenticated = true
+            state.isAuthenticated = true;
+            state.name = action.payload
         },
         startLoadData: state => {
             state.requestSended = true

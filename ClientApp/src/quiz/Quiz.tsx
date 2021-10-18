@@ -1,8 +1,10 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '../app/hooks';
 
 export default function Quiz() {
+    const userName = useAppSelector(s => s.auth.name)
     return (
         <Box
             sx={{
@@ -23,9 +25,10 @@ export default function Quiz() {
                     gridAutoRows: '40px',
                     gap: 5,
                     gridTemplateRows: 'auto',
-                    gridTemplateAreas: `"header header header header"
-            "sidebar main main main"
-            "footer footer footer footer"`,
+                    gridTemplateAreas: `
+                    "header header header header"
+                    "sidebar main main main"
+                    "footer footer footer footer"`,
 
                 }}
             >
@@ -43,7 +46,7 @@ export default function Quiz() {
                         <li>тут разметить пользователя 😎</li>
                         <li>тут разметить пользователя 😴</li>
                         <li>тут разметить пользователя 🐵</li>
-                        <li>тут разметить пользователя 💩</li>
+                        <li>тут разметить пользователя 💩 {userName}</li>
                         <li>тут разметить пользователя 🐱‍👤</li>
                     </ul>
                 </Box>
