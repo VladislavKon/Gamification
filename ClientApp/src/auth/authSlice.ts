@@ -34,7 +34,7 @@ export const userOkFetch = createAsyncThunk('get/api/user', async (): Promise<Ge
         if (response.ok && response.body) {
             body = await response.json();
         }
-        return { isOk: response.ok, userName: body.userName, error: response.ok }
+        return { isOk: response.ok, userName: body.userName, error: !response.ok }
     } catch (ex) {
         
         console.error(ex);
