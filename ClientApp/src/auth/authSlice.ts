@@ -23,7 +23,7 @@ interface GetCurrentUserResponse{
     error?: boolean
 }
 
-export const userOkFetch = createAsyncThunk('get/api/user', async (): Promise<GetCurrentUserResponse> => {
+export const userOkFetch = createAsyncThunk('get/api/user', async (): Promise<void> => {
     const dispatch = useAppDispatch();
 
     dispatch(startLoadData());
@@ -34,20 +34,20 @@ export const userOkFetch = createAsyncThunk('get/api/user', async (): Promise<Ge
         console.log(response);
         if (response.ok && response.body) {
             body = await response.json();
+            dispatch(signInComplete(body.username ?? ""));
         }
-        return { isOk: response.ok, userName: body.username, error: !response.ok }
+        
     } catch (ex) {
         console.error(ex);
-        return { isOk: false, error: true }
-    } finally {
-        dispatch(endLoadData());
-    }
+       
+    } 
+    dispatch(endLoadData);
 });
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {
+    reducers: {// функции которые меняют состояние 
         signInComplete: (state: AuthState, action: PayloadAction<string>) => {
             console.log(state.isAuthenticated);
             state.isAuthenticated = true;
@@ -59,16 +59,11 @@ export const authSlice = createSlice({
         endLoadData: state => {
             state.requestSended = false
         },
+
     },
     extraReducers: (builder) => {
         builder.addCase(userOkFetch.fulfilled, (state, action) => {
-            if (action.payload.error) {
-                state.requestSended = false
-                return;
-            }
-            state.isAuthenticated = action.payload.isOk
-            state.name = action.payload.userName ?? ''
-            state.requestSended = false
+            state.requestSended = false;
         });
     }
 });

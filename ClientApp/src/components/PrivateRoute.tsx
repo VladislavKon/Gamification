@@ -8,17 +8,17 @@ const PrivateRoute: React.ComponentType<any> = ({
   component: Component,
   ...rest
 }) => {
-  const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated)
+  const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated) // получаем текущее состояние 
   const requestProcess = useAppSelector(state => state.auth.requestSended)
 
   return (
     <Route
-      {...rest}
-      render={props =>
+      {...rest} //какое то наследование  
+      render={props => 
         isAuthenticated ? (
           <Component {...props} />
         ) : 
-        requestProcess ? (<CircularProgress/>) :
+        requestProcess ? (<CircularProgress/>) : // меняется глобальный стейт почему то
         (
           <Redirect push to='/signin' />
         )

@@ -12,6 +12,9 @@ import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { userOkFetch } from "./auth/authSlice";
 import Quiz from "./quiz/Quiz";
 import Lobby from "./lobby/Lobby";
+import Home from "./components/Home";
+import Navigation from "./components/Navigation";
+import Help from "./components/Help";
 
 const App = () => {
     const history = createBrowserHistory();
@@ -20,8 +23,13 @@ const App = () => {
         const dispatch = useAppDispatch();
         dispatch(userOkFetch());
     // }
-    return (
-        <Router history={history}>
+    return (<>
+    <Router history={history}>
+        <Navigation/>
+        
+            <Route exact path="/" component={Home} />
+            <Route  path="/nav" component={Navigation} />
+            <Route  path="/help" component={Help} />
             <Route path='/signin' component={SignIn} />
             <Route path='/signup' component={SignUp} />
             <Route path='/lobby' component={Lobby} />
@@ -29,6 +37,7 @@ const App = () => {
             <PrivateRoute path='/game' component={Temp} />
             <PrivateRoute path='/game2' component={Temp2} />
         </Router>
+        </>
     );
 }
 
