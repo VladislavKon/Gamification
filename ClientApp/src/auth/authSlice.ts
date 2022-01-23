@@ -10,18 +10,13 @@ export interface AuthState {
     name: string
 }
 
-const initialState: AuthState = {
+export const initialState: AuthState = {
     isAuthenticated: false,
     requestSended: true,
     error: false,
     name: ''
 }
 
-interface GetCurrentUserResponse{
-    isOk: boolean,
-    userName?: string,
-    error?: boolean
-}
 
 export const userOkFetch = createAsyncThunk('get/api/user', async (): Promise<void> => {
     const dispatch = useAppDispatch();
@@ -49,7 +44,6 @@ export const authSlice = createSlice({
     initialState,
     reducers: {// функции которые меняют состояние 
         signInComplete: (state: AuthState, action: PayloadAction<string>) => {
-            console.log(state.isAuthenticated);
             state.isAuthenticated = true;
             state.name = action.payload
         },

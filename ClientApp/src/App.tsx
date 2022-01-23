@@ -1,6 +1,4 @@
 import React from "react";
-import { Provider } from "react-redux";
-import { store } from "./app/store";
 import SignIn from "./auth/SignIn";
 import SignUp from "./auth/SignUp";
 import { createBrowserHistory } from 'history';
