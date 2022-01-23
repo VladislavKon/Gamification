@@ -11,7 +11,7 @@ import { Temp2 } from "./components/temp2";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { userOkFetch } from "./auth/authSlice";
 import Quiz from "./quiz/Quiz";
-import Lobby from "./lobby/Lobby";
+import Lobby from "./components/lobby/Lobby";
 import Home from "./components/Home";
 import Navigation from "./components/Navigation";
 import Help from "./components/Help";
