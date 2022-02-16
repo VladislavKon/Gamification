@@ -7,6 +7,6 @@ namespace Gamification.Models.DTO.Map
 {
     public class MapDto
     {
-        public List<SaveMapModel> SaveMapModels { get; set; }
+        public List<Cell> Cells { get; set; }
     }
 }

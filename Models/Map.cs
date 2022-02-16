@@ -7,6 +7,6 @@ namespace Gamification.Models
 {
     public class Map
     {
-        public IEnumerable<Cell> Cells { get; set; }
+        public List<Cell> Cells { get; set; }
     }
 }

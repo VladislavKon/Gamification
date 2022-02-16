@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace Gamification.Models.DTO.Map
 {
-    public class SaveMapModel
+    public class Cell
     {
+        public int id { get; set; }
         public int color { get; set; }
         public int elevation { get; set; }
         public int x { get; set; }

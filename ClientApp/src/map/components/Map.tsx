@@ -14,14 +14,14 @@ function Map() {
   }
 
   useEffect(function () {
-    unityContext.on("SaveGame", function (map) {      
-        console.log(map)
-        const data = new FormData()        
-        data.append("map", map);
-        const xhr = new XMLHttpRequest();
-        xhr.open("post", 'https://localhost:44312/api/map/save-map', true)
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send(map);
+      unityContext.on("SaveGame", function (map) {   
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: map
+      };
+      fetch('https://localhost:44312/api/map/save-map', requestOptions)
+          
       }
     );
   }, []);

@@ -19,24 +19,20 @@ namespace Gamification.Controllers
     {
         private readonly IMapRepository _mapRepository;
         private readonly IMapper _mapper;
-        private readonly CancellationToken _token;
 
-        public MapController(IMapRepository mapRepository, IMapper mapper, CancellationToken token)
+        public MapController(IMapRepository mapRepository, IMapper mapper )
         {
             _mapper = mapper;
             _mapRepository = mapRepository;
-            _token = token;
         }
 
         // POST: MapController/Create
         [HttpPost]
-        [Route("save-map")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SaveMapData(MapDto map)
+        [Route("save-map")]        
+        public async Task<ActionResult> SaveMapData([FromBody] MapDto cells, CancellationToken token)
         {
-            //MapDto map = JsonSerializer.Deserialize<MapDto>(mapString);
-            var newMap = _mapper.Map<MapDto, Map>(map);
-            await _mapRepository.SaveMap(newMap, _token);
+            Map map = _mapper.Map<Map>(cells);
+            await _mapRepository.SaveMap(map, token);
 
             return Ok();
         }
