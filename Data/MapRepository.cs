@@ -18,7 +18,7 @@ namespace Gamification.Data
 
         }
 
-        public async Task<string> SaveMap(Map map, CancellationToken token)
+        public async Task<string> SaveMapAsync(Map map, CancellationToken token)
         {
             string message;
             try
@@ -38,9 +38,12 @@ namespace Gamification.Data
             
         }
 
-        public async Task<IEnumerable<Cell>> LoadMap()
+        public async Task<Map> LoadMapAsync(CancellationToken token)
         {
-            var map = await db.Cells.Select(c => c).ToListAsync();
+            var response = await db.Cells
+                .Select(c => c)
+                .ToListAsync(token);
+            Map map = new Map(response);
 
             return map;
         }        

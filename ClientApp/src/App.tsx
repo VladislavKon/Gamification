@@ -13,7 +13,7 @@ import Lobby from "./components/lobby/Lobby";
 import Home from "./components/Home";
 import Navigation from "./components/Navigation";
 import Help from "./components/Help";
-import Map from "./map/components/Map";
+import Map from "./components/Map";
 
 const App = () => {
     const history = createBrowserHistory();

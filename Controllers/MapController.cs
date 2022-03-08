@@ -18,23 +18,29 @@ namespace Gamification.Controllers
     public class MapController : ControllerBase
     {
         private readonly IMapRepository _mapRepository;
-        private readonly IMapper _mapper;
-
-        public MapController(IMapRepository mapRepository, IMapper mapper )
-        {
-            _mapper = mapper;
+        
+        public MapController(IMapRepository mapRepository)
+        {            
             _mapRepository = mapRepository;
         }
 
         // POST: MapController/Create
         [HttpPost]
         [Route("save-map")]        
-        public async Task<ActionResult> SaveMapData([FromBody] MapDto cells, CancellationToken token)
-        {
-            Map map = _mapper.Map<Map>(cells);
-            await _mapRepository.SaveMap(map, token);
+        public async Task<ActionResult> SaveMapData([FromBody] Map cells, CancellationToken token)
+        {            
+            await _mapRepository.SaveMapAsync(cells, token);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("load-map")]
+        public async Task<ActionResult<Map>> LoadMapData(CancellationToken token)
+        {
+            var map = await _mapRepository.LoadMapAsync(token);            
+
+            return Ok(map);
         }
     }
 }

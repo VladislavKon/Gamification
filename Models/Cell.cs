@@ -7,11 +7,11 @@ namespace Gamification.Models
 {
     public class Cell
     {
-        public int id { get; set; }
-        public int color { get; set; }
-        public int elevation { get; set; }
-        public int x { get; set; }
-        public int y { get; set; }
-        public int z { get; set; }
+        public int Id { get; set; }
+        public int Color { get; set; }
+        public int Elevation { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Z { get; set; }
     }
 }

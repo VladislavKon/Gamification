@@ -9,7 +9,7 @@ namespace Gamification.Data.Interfaces
 {
     public interface IMapRepository
     {
-        public Task<string> SaveMap(Map newTeam, CancellationToken token);
-        public Task<IEnumerable<Cell>> LoadMap();
+        public Task<string> SaveMapAsync(Map newTeam, CancellationToken token);
+        public Task<Map> LoadMapAsync(CancellationToken token);
     }
 }

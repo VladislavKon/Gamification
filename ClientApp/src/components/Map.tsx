@@ -8,16 +8,36 @@ const unityContext = new UnityContext({
   codeUrl: "Build/public.wasm.unityweb",
 });
 
+
+
 function Map() {
   function spawnEnemies() {
     unityContext.send("GameController", "SpawnEnemies", 100);
-  }
+  }  
 
   useEffect(function () {
-    unityContext.on("SaveGame", function (map) {
-      console.log(map)
-    });
+      unityContext.on("SaveMap", function (map) {   
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: map
+      };
+      fetch('https://localhost:44312/api/map/save-map', requestOptions)
+      }
+    );
   }, []);
+
+  useEffect(function () {
+    unityContext.on("LoadMap", function () {   
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }        
+    };
+    fetch('https://localhost:44312/api/map/load-map', requestOptions)
+    .then(data => unityContext.send("Hex Map Editor", "SetMapData", JSON.stringify(data)))
+    }
+  );
+}, []);
 
   return (
     <div>
