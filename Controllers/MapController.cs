@@ -1,13 +1,9 @@
-﻿using AutoMapper;
-using Gamification.Data.Interfaces;
+﻿using Gamification.Data.Interfaces;
+using Gamification.Hubs;
+using Gamification.Hubs.Clients;
 using Gamification.Models;
-using Gamification.Models.DTO.Map;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
+using Microsoft.AspNetCore.SignalR;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,10 +14,12 @@ namespace Gamification.Controllers
     public class MapController : ControllerBase
     {
         private readonly IMapRepository _mapRepository;
+        private readonly IHubContext<MapHub, IMapClient> _mapHub;
         
-        public MapController(IMapRepository mapRepository)
+        public MapController(IMapRepository mapRepository, IHubContext<MapHub, IMapClient> mapHub)
         {            
             _mapRepository = mapRepository;
+            _mapHub = mapHub;
         }
 
         // POST: MapController/Create
@@ -41,6 +39,15 @@ namespace Gamification.Controllers
             var map = await _mapRepository.LoadMapAsync(token);            
 
             return Ok(map);
+        }
+
+        [HttpPut]
+        [Route("update-cell")]
+        public async Task<ActionResult> UpdateCell([FromBody] Cell cell, CancellationToken token)
+        {
+            await _mapRepository.UpdateCell(cell, token);
+
+            return Ok();
         }
     }
 }

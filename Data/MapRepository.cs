@@ -20,7 +20,6 @@ namespace Gamification.Data
 
         public async Task<string> SaveMapAsync(Map map, CancellationToken token)
         {
-            string message;
             try
             {
                 foreach (var cell in map.Cells)
@@ -29,11 +28,26 @@ namespace Gamification.Data
                 }
                 
                 await db.SaveChangesAsync(token);
-                return message = $"Ячейки успешно сохранены в количестве: {db.Cells.Count()}";
+                return $"Ячейки успешно сохранены в количестве: {db.Cells.Count()}";
             }
             catch (Exception e)
             {
-                return message = $"Не удалось сохранить карту: {e.Message}";
+                return $"Не удалось сохранить карту: {e.Message}";
+            }
+            
+        }
+
+        public async Task<bool> UpdateCell(Cell cell, CancellationToken token)
+        {
+            try
+            {
+                var targetCell = db.Cells.SingleOrDefault(c => c.X == cell.X && c.Y == cell.Y && c.Z == cell.Z).Color = cell.Color;
+                await db.SaveChangesAsync(token);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
             
         }

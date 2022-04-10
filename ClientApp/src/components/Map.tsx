@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import Unity, { UnityContext } from "react-unity-webgl";
 
 const unityContext = new UnityContext({
@@ -13,7 +14,27 @@ const unityContext = new UnityContext({
 function Map() {
   function spawnEnemies() {
     unityContext.send("GameController", "SpawnEnemies", 100);
-  }  
+  }
+
+  const connection = new HubConnectionBuilder()
+    .withUrl("/hubs/map")
+    .configureLogging(LogLevel.Information)
+    .build();
+
+  connection.on("UpdateCell", (cell: any) => {
+    connection.send('UpdateCell', cell);
+  });
+
+  connection.start().catch(err => document.write(err));
+
+  const updateCell = async (cell: any) => {  
+    try {
+        await connection.send('UpdateCell', cell);
+    }
+    catch(e) {
+        console.log(e);
+    }
+  }
 
   useEffect(function () {
       unityContext.on("SaveMap", function (map) {   
@@ -26,6 +47,20 @@ function Map() {
       }
     );
   }, []);
+
+  useEffect(function () {
+    unityContext.on("UpdateCell", function (cell) {   
+      const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: cell
+    };    
+    fetch('https://localhost:44312/api/map/update-cell', requestOptions)
+    .then(() => updateCell(cell))
+    
+    }
+  );
+}, []);
 
   useEffect(function () {
     unityContext.on("LoadMap", function () {   

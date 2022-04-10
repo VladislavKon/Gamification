@@ -112,6 +112,7 @@ namespace Gamification
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<ChatHub>("/hub");
+                endpoints.MapHub<MapHub>("/hubs/map");
                 endpoints.MapControllerRoute( // еще надо уточнить какая будет маршрутизация 
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");

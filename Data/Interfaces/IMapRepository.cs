@@ -11,5 +11,6 @@ namespace Gamification.Data.Interfaces
     {
         public Task<string> SaveMapAsync(Map newTeam, CancellationToken token);
         public Task<Map> LoadMapAsync(CancellationToken token);
+        public Task<bool> UpdateCell(Cell cell, CancellationToken token);
     }
 }
