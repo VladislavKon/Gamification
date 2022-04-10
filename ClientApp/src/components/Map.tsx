@@ -34,6 +34,7 @@ function Map() {
         headers: { 'Content-Type': 'application/json' }        
     };
     fetch('https://localhost:44312/api/map/load-map', requestOptions)
+    .then(response => response.json())
     .then(data => unityContext.send("Hex Map Editor", "SetMapData", JSON.stringify(data)))
     }
   );
