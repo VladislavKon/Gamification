@@ -45,7 +45,10 @@ namespace Gamification.Controllers
         [Route("update-cell")]
         public async Task<ActionResult> UpdateCell([FromBody] Cell cell, CancellationToken token)
         {
-            await _mapRepository.UpdateCell(cell, token);
+            if (await _mapRepository.UpdateCell(cell, token))
+            {
+                await _mapHub.Clients.All.UpdateCell(cell);
+            };
 
             return Ok();
         }

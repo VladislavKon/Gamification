@@ -22,7 +22,7 @@ function Map() {
     .build();
 
   connection.on("UpdateCell", (cell: any) => {
-    connection.send('UpdateCell', cell);
+    unityContext.send("Hex Map Editor", "GrabCell", JSON.stringify(cell))
   });
 
   connection.start().catch(err => document.write(err));
