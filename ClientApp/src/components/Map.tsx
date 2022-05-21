@@ -60,7 +60,7 @@ function Map() {
     
     }
   );
-}, []);
+  }, []);
 
   useEffect(function () {
     unityContext.on("LoadMap", function () {   
@@ -73,12 +73,44 @@ function Map() {
     .then(data => unityContext.send("Hex Map Editor", "SetMapData", JSON.stringify(data)))
     }
   );
-}, []);
+  }, []);
+
+  useEffect(function () {
+    unityContext.on("GetCurrentUser", function () {   
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }        
+    };
+    fetch('https://localhost:44312/api/auth/user', requestOptions)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+        unityContext.send("GameController", "SetPlayer", data.username)
+      })
+    }
+  );
+  }, []);
+
+  useEffect(function () {
+    unityContext.on("GetAllTeams", function () {   
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }        
+    };
+    fetch('https://localhost:44312/api/team/getallteams', requestOptions)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        unityContext.send("GameController", "SetTeams", JSON.stringify(data)) 
+      })
+    }
+  );
+  }, []);
 
   return (
     <div>
       <button onClick={spawnEnemies}>Spawn a bunch!</button>      
-      <Unity style={{ width: '1280px', height: '720px'}} unityContext={unityContext} />
+      <Unity style={{ width: '1366px', height: '720px'}} unityContext={unityContext} />
     </div>
   );
 }

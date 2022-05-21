@@ -41,7 +41,7 @@ namespace Gamification.Data
         {
             try
             {
-                var targetCell = db.Cells.SingleOrDefault(c => c.X == cell.X && c.Y == cell.Y && c.Z == cell.Z).Color = cell.Color;
+                var targetCell = db.Cells.SingleOrDefault(c => c.X == cell.X && c.Y == cell.Y && c.Z == cell.Z).Owner = cell.Owner;
                 await db.SaveChangesAsync(token);
                 return true;
             }
@@ -55,7 +55,6 @@ namespace Gamification.Data
         public async Task<Map> LoadMapAsync(CancellationToken token)
         {
             var response = await db.Cells
-                .Select(c => c)
                 .ToListAsync(token);
             Map map = new Map(response);
 
